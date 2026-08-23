@@ -78,7 +78,7 @@ export default function Header() {
               className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-blue-500 hover:border-blue-400 transition-all duration-300 hover:scale-110 group shadow-[0_0_20px_rgba(37,99,235,0.2)] hover:shadow-[0_0_40px_rgba(37,99,235,0.4)]"
             >
               <Image
-                src="/images/profil.jpg"
+                src="/images/profil.png"
                 alt="Mandasoa"
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -183,7 +183,7 @@ export default function Header() {
           className="fixed inset-0 z-[100] bg-[#0a0a0a]/95 backdrop-blur-xl flex items-center justify-center cursor-pointer animate-fade-in"
         >
           <div className="relative w-64 h-64 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-blue-500 shadow-[0_0_80px_rgba(37,99,235,0.4)] animate-scale-in">
-            <Image src="/images/profile.jpg" alt="Mandasoa" fill className="object-cover" />
+            <Image src="/images/profil.png" alt="Mandasoa" fill className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-blue-500/20 to-transparent" />
           </div>
         </div>
