@@ -78,7 +78,7 @@ export default function Header() {
               className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-blue-500 hover:border-blue-400 transition-all duration-300 hover:scale-110 group shadow-[0_0_20px_rgba(37,99,235,0.2)] hover:shadow-[0_0_40px_rgba(37,99,235,0.4)]"
             >
               <Image
-                src="/images/profile.jpg"
+                src="/images/profil.jpg"
                 alt="Mandasoa"
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"

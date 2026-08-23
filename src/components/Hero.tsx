@@ -164,7 +164,7 @@ export default function Hero() {
               </button>
 
               <a
-                href="/cv.pdf"
+                href="/manda_cv.pdf"
                 download
                 className="px-8 py-3 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(37,99,235,0.4)] flex items-center gap-2"
               >
