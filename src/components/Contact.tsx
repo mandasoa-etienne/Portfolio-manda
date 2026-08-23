@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
 import {
   ArrowUpRight,
   CheckCircle,
@@ -11,6 +12,7 @@ import {
   Phone,
   Send,
   Sparkles,
+  XCircle,
 } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
@@ -43,7 +45,7 @@ const contacts: ContactItem[] = [
   {
     label: "LinkedIn",
     value: "linkedin.com/in/manda-andrianavalona",
-    href: "https://www.linkedin.com/in/manda-andrianavalona-7996b62b3/",
+    href: "https://www.linkedin.com/in/manda-andrianavalona-180930376/",
     icon: FaLinkedin,
     external: true,
   },
@@ -56,6 +58,12 @@ const contacts: ContactItem[] = [
   },
 ];
 
+// Clés EmailJS — mises en dur pour garantir le fonctionnement
+// même si les variables d'environnement posent problème.
+const EMAILJS_SERVICE_ID = "service_mb59174";
+const EMAILJS_TEMPLATE_ID = "template_95legmm";
+const EMAILJS_PUBLIC_KEY = "yq5xtNrHmm_cIujqN";
+
 export default function Contact() {
   const [isVisible, setIsVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -66,9 +74,12 @@ export default function Contact() {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const sectionRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -101,20 +112,46 @@ export default function Contact() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setIsSubmitted(true);
+    if (!formRef.current) return;
 
-    setFormData({
-      name: "",
-      email: "",
-      message: "",
-    });
+    setIsSending(true);
+    setSendError(false);
 
-    setTimeout(() => {
-      setIsSubmitted(false);
-    }, 3500);
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+
+      setIsSubmitted(true);
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 3500);
+    } catch (error) {
+      console.error("Erreur EmailJS :", error);
+      setSendError(true);
+
+      setTimeout(() => {
+        setSendError(false);
+      }, 3500);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const fieldClasses = (field: string) => `
@@ -408,6 +445,7 @@ export default function Contact() {
               {/* FORM */}
 
               <form
+                ref={formRef}
                 onSubmit={handleSubmit}
                 className="relative space-y-5"
               >
@@ -424,6 +462,7 @@ export default function Contact() {
                   <input
                     type="text"
                     id="name"
+                    name="name"
                     value={formData.name}
                     onChange={(e) =>
                       setFormData({
@@ -452,6 +491,7 @@ export default function Contact() {
                   <input
                     type="email"
                     id="email"
+                    name="email"
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({
@@ -479,6 +519,7 @@ export default function Contact() {
 
                   <textarea
                     id="message"
+                    name="message"
                     value={formData.message}
                     onChange={(e) =>
                       setFormData({
@@ -501,7 +542,8 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  className="group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:from-blue-500 hover:to-blue-400 hover:shadow-lg hover:shadow-blue-600/20 active:scale-[0.99]"
+                  disabled={isSending}
+                  className="group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:from-blue-500 hover:to-blue-400 hover:shadow-lg hover:shadow-blue-600/20 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
@@ -510,6 +552,13 @@ export default function Contact() {
                       <CheckCircle size={19} />
                       Message envoyé !
                     </>
+                  ) : sendError ? (
+                    <>
+                      <XCircle size={19} />
+                      Échec de l&apos;envoi, réessayez
+                    </>
+                  ) : isSending ? (
+                    <>Envoi en cours...</>
                   ) : (
                     <>
                       <Send

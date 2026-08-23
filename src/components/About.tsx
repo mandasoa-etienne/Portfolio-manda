@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Code, Palette, Globe, Users, Award, Lightbulb } from "lucide-react";
+import { Code, Globe, Users, Award, Lightbulb } from "lucide-react";
 
 const stats = [
   { label: "Projets réalisés", value: "12+", icon: Code },
