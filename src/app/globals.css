@@ -45,6 +45,7 @@
 html {
   scroll-behavior: smooth;
   background: var(--bg-dark);
+  width: 100%;
 }
 
 body {
@@ -56,6 +57,26 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+
+  /* Centrage global : empêche le contenu de coller à gauche
+     sur les grands écrans, quel que soit le composant racine
+     que Next.js insère (#__next, <main>, etc.) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Le wrapper racine de Next.js doit occuper toute la largeur
+   disponible pour que le centrage des enfants (.container-custom)
+   fonctionne réellement, plutôt que de laisser le contenu
+   se caler à gauche dans une boîte non-flex */
+#__next,
+body > div,
+body > main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 a {
@@ -265,6 +286,9 @@ a {
 .parallax-section {
   position: relative;
   overflow: hidden;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .parallax-section::before {
@@ -289,9 +313,20 @@ a {
 }
 
 
+/* =========================================================
+   SECTION SPACING
+   ========================================================= */
+
 .section-spacing {
   width: 100%;
   padding: 96px 20px;
+
+  /* Chaque section se comporte comme une ligne pleine largeur
+     qui centre elle-même son contenu interne, au lieu de
+     dépendre uniquement du parent */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @media (min-width: 640px) {
@@ -308,11 +343,20 @@ a {
 
 
 
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
 .container-custom {
   width: 100%;
-  max-width: 1400px;
+
+  /* clamp() : la largeur max grandit avec l'écran mais se
+     limite sur les très grands moniteurs (2K/4K/ultra-wide),
+     évitant un contenu écrasé à gauche ou étiré à l'infini */
+  max-width: min(1400px, 92vw);
   margin-left: auto;
   margin-right: auto;
+
   padding-left: 24px;
   padding-right: 24px;
 }
@@ -328,6 +372,12 @@ a {
   .container-custom {
     padding-left: 40px;
     padding-right: 40px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container-custom {
+    max-width: 1600px;
   }
 }
 
