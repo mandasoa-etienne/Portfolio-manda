@@ -15,7 +15,7 @@ const links = [
 ];
 
 const socials = [
-  { icon: FaGithub, href: "https://github.com/Mandasoa12", label: "GitHub" },
+  { icon: FaGithub, href: "https://github.com/mandasoa-etienne", label: "GitHub" },
   { icon: FaLinkedin, href: "https://www.linkedin.com/in/manda-andrianavalona-180930376/", label: "LinkedIn" },
   { icon: Mail, href: "mailto:mandaandrianavalona8@gmail.com", label: "Email" },
 ];

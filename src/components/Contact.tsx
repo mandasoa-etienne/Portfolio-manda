@@ -38,7 +38,7 @@ const contacts: ContactItem[] = [
   {
     label: "GitHub",
     value: "github.com/Mandasoa12",
-    href: "https://github.com/Mandasoa12",
+    href: "https://github.com/mandasoa-etienne",
     icon: FaGithub,
     external: true,
   },
